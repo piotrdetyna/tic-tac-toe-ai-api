@@ -85,7 +85,10 @@ def game_reset_view(
     save_game(game, db)
     return game
     
-
+@app.delete('/games/', status_code=204)
+def delete_games_view(db: Session = Depends(get_db)):
+    delete_all_games(db)
+    return
 
 def raise_400_if_game_is_over(game):
     if ttt.terminal(game.state):    
@@ -115,4 +118,9 @@ def get_game_or_404(db: Session, game_id: str):
 
 def save_game(game, db):
     db.add(game)
+    db.commit()
+
+
+def delete_all_games(db: Session):
+    db.query(models.Game).delete()
     db.commit()
