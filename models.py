@@ -1,9 +1,9 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, TypeDecorator, types
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, String, TypeDecorator, types
 from uuid import uuid4
 from database import Base
 import json
 import tictactoe as ttt
+from config import *
 
 class Json(TypeDecorator):
 
@@ -24,14 +24,15 @@ class Json(TypeDecorator):
             return json.loads(value)
         except (ValueError, TypeError):
             return None
+        
 def generate_uuid():
-    return uuid4().hex[:10].upper()
+    return uuid4().hex[:GAME_ID_LENGTH].upper()
 
 class Game(Base):
     __tablename__ = 'games'
     id = Column(String, primary_key=True, index=True, default=generate_uuid)
     state = Column(Json, default=ttt.initial_state())
-    ai_symbol = Column(String, default='O')
+    ai_symbol = Column(String, default=DEFAULT_AI_SYMBOL)
     winner = Column(String)
-    player = Column(String, default='X')
+    current_player = Column(String, default=DEFAULT_FIRST_PLAYER_SYMBOL)
 
