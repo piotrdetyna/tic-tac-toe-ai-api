@@ -20,7 +20,7 @@ class Action(BaseModel):
 STATE_ROW = Annotated[
     list[
         Symbol | None
-    ], Field(min_items=3, max_items=3)]
+    ], Field(min_length=3, max_length=3)]
 
 class GameBase(BaseModel):
     ai_symbol: Symbol = Field(
@@ -28,7 +28,7 @@ class GameBase(BaseModel):
         description=f'Symbol ("O" or "X"), default: {DEFAULT_AI_SYMBOL} which is used by the AI')
 
 class Game(GameBase):
-    state: Annotated[list[STATE_ROW], Field(min_items=3, max_items=3)] = Field(
+    state: Annotated[list[STATE_ROW], Field(min_length=3, max_length=3)] = Field(
         description='A 3x3 grid representing current state of the game'
     )
     
