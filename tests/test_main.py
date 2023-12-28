@@ -192,6 +192,65 @@ GET_GAME_INVALID_ID_PAYLOAD_RESPONSE_VALIDATORS = [
     not_contains_id,
 ]
 
+RESET_GAME_VALID_PAYLOADS = [
+    {
+        'payload': {},
+        'validators': [
+            is_status_200,
+            is_valid_initial_state,
+            is_valid_initial_winner,
+            is_default_ai_symbol,
+            is_valid_current_player,
+        ]
+    },
+    {
+        'payload': {'ai_symbol': 'X'},
+        'validators': [is_status_200]
+    },
+    {
+        'payload': {'ai_symbol': 'O'},
+        'validators': [is_status_200]
+    },
+]
+
+RESET_GAME_INVALID_PAYLOADS = [
+    {
+        'payload': {'ai_symbol': 'foo'},
+        'validators': [is_status_4xx]
+    },
+    {
+        'payload': {'ai_symbol': 'n'},
+        'validators': [is_status_4xx]
+    },
+    {
+        'payload': {'ai_symbol': ''},
+        'validators': [is_status_4xx]
+    },
+]
+
+RESET_GAME_EXCESS_PARAMETERS_PAYLOADS = [
+    {
+        'payload': {'id': TEST_INVALID_ID},
+        'validators': [is_valid_id]
+    },
+    {
+        'payload': {'id': ''},
+        'validators': [is_valid_id]
+    },
+    {
+        'payload': {'state': [[None, 'X', None], [None, None, None], [None, 'O', None]]},
+        'validators': [is_valid_initial_state]
+    },
+    {
+        'payload': {'winner': 'X'},
+        'validators': [is_valid_initial_winner]
+    },
+    {
+        'payload': {'winner': 'O'},
+        'validators': [is_valid_initial_winner]
+    },
+]
+
 
 def test_create_game_valid_payloads():
     for i, pv in enumerate(CREATE_GAME_VALID_PAYLOADS):
@@ -207,7 +266,6 @@ def test_create_game_valid_payloads():
             print(f'\tValidating using validator {j}: {validator.__name__}')
             assert validator(response)
 
-
 def test_create_game_invalid_payloads():
     for i, pv in enumerate(CREATE_GAME_INVALID_PAYLOADS):
         payload, validators = pv['payload'], pv['validators']
@@ -220,7 +278,6 @@ def test_create_game_invalid_payloads():
         for j, validator in enumerate(validators):
             print(f'\tValidating using validator {j}: {validator.__name__}')
             assert validator(response)
-
 
 def test_create_game_excess_parameters_payloads():
     for i, pv in enumerate(CREATE_GAME_EXCESS_PARAMETERS_PAYLOADS):
@@ -235,7 +292,6 @@ def test_create_game_excess_parameters_payloads():
             print(f'\tValidating using validator {j}: {validator.__name__}')
             assert validator(response)
 
-
 def test_get_games_on_non_empty_db():
     clear_games_db()
     populate_games_db()
@@ -246,7 +302,6 @@ def test_get_games_on_non_empty_db():
         print(f'\tValidating using validator {j}: {validator.__name__}')
         assert validator(response)
 
-
 def test_get_games_on_empty_db():
     clear_games_db()
 
@@ -256,7 +311,6 @@ def test_get_games_on_empty_db():
         print(f'\tValidating using validator {j}: {validator.__name__}')
         assert validator(response)
 
-
 def test_get_game_valid_id_payload():
     valid_game_id = populate_games_db()[0]
     response = client.get(f'/games/{valid_game_id}')
@@ -265,14 +319,12 @@ def test_get_game_valid_id_payload():
         print(f'\tValidating using validator {j}: {validator.__name__}')
         assert validator(response)
 
-
 def test_get_game_invalid_id_payload():
     response = client.get(f'/games/{TEST_INVALID_ID}')
     print('Testing get game endpoint with invalid ID')
     for j, validator in enumerate(GET_GAME_INVALID_ID_PAYLOAD_RESPONSE_VALIDATORS):
         print(f'\tValidating using validator {j}: {validator.__name__}')
         assert validator(response)
-
 
 def test_delete_games():
     populate_games_db()
@@ -285,6 +337,53 @@ def test_delete_games():
 
     assert is_db_empty
 
+def test_reset_game_valid_payloads():
+    print('Testing reset game endpoint with valid payload')
+    valid_game_id = populate_games_db()[0]
+    for i, pv in enumerate(RESET_GAME_VALID_PAYLOADS):
+        payload, validators = pv['payload'], pv['validators']
+        print(f'Trying payload {i}: {payload}')
+        
+        response = client.put(
+            f"/games/{valid_game_id}",
+            json=payload,
+        )
+
+        for j, validator in enumerate(validators):
+            print(f'\tValidating using validator {j}: {validator.__name__}')
+            assert validator(response)
+
+def test_reset_game_invalid_payloads():
+    print('Testing reset game endpoint with invalid payload')
+    valid_game_id = populate_games_db()[0]
+    for i, pv in enumerate(RESET_GAME_INVALID_PAYLOADS):
+        payload, validators = pv['payload'], pv['validators']
+        print(f'Trying payload {i}: {payload}')
+        
+        response = client.put(
+            f"/games/{valid_game_id}",
+            json=payload,
+        )
+
+        for j, validator in enumerate(validators):
+            print(f'\tValidating using validator {j}: {validator.__name__}')
+            assert validator(response)
+
+def test_reset_game_excess_parameters_payloads():
+    print('Testing reset game endpoint with excess payload')
+    valid_game_id = populate_games_db()[0]
+    for i, pv in enumerate(RESET_GAME_EXCESS_PARAMETERS_PAYLOADS):
+        payload, validators = pv['payload'], pv['validators']
+        print(f'Trying payload {i}: {payload}')
+        
+        response = client.put(
+            f"/games/{valid_game_id}",
+            json=payload,
+        )
+
+        for j, validator in enumerate(validators):
+            print(f'\tValidating using validator {j}: {validator.__name__}')
+            assert validator(response)
 
 def test_game_simulation():
     print('Testing game simulation')
