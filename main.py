@@ -70,10 +70,10 @@ def game_action_view(
     save_game(game, db)
     return game
 
-@app.put('/games/{game_id}', response_model=schemas.Game)
+@app.put('/games/{game_id}', response_model=schemas.GameWithId)
 def game_reset_view(
         game_id: Annotated[str, Path(min_length=GAME_ID_LENGTH, max_length=GAME_ID_LENGTH)], 
-        ai_symbol: Annotated[schemas.Symbol | None, Body(embed=True)] = None,
+        input_game: schemas.CreateGame,
         db: Session = Depends(get_db)
     ):
 
@@ -81,7 +81,7 @@ def game_reset_view(
     game.state = ttt.initial_state()
     game.winner = None
     game.current_player = DEFAULT_FIRST_PLAYER_SYMBOL
-    game.ai_symbol = ai_symbol
+    game.ai_symbol = input_game.ai_symbol
     save_game(game, db)
     return game
     
@@ -119,7 +119,6 @@ def get_game_or_404(db: Session, game_id: str):
 def save_game(game, db):
     db.add(game)
     db.commit()
-
 
 def delete_all_games(db: Session):
     db.query(models.Game).delete()
