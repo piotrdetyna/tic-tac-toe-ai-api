@@ -1,6 +1,6 @@
 <h1 style="text-align: center;"> ⭕ Tic-Tac-Toe AI API ❌ </h1>
 
-API allowing you to play tic-tac-toe against the minimax algorithm (more on this later). The API is created in FastAPI, and has great tests. In addition, there is a sample UI using this API.
+API allowing you to play tic-tac-toe against the minimax algorithm (more on this later). The interface is created in FastAPI, and has great tests. In addition, in this repo you can find a sample Tic-Tac-Toe game UI, which is based on this API.
 
 ![Demonstration](https://piotr.detyna.pl/tic-tac-toe/ttt.gif)
 
@@ -43,7 +43,7 @@ Note: It is possible to optimize this algorithm by using `alpha-beta pruning`, w
 <span float="left"><img src="https://piotr.detyna.pl/get.png" style="width: 40px; margin-bottom: -5px;"></span>`/games/{game_id}`
 
 - Returns a game with given id
-- Parameters: `game_id` _required_
+- Parameters: `game_id` (_required_)
 - Example response: 
     ```
     {
@@ -68,7 +68,7 @@ Note: It is possible to optimize this algorithm by using `alpha-beta pruning`, w
 <span float="left"><img src="https://piotr.detyna.pl/post.png" style="width: 40px; margin-bottom: -5px;"></span>`/games/`
 
 - Creates a game
-- Parameters: `ai_symbol` _optional_
+- Parameters: `ai_symbol` (_optional_)
     - `ai_symbol` can be 'O' or 'X', if it's not sent, ai will use `config.DEFAULT_AI_SYMBOL`
 - Example request body:
     ```
@@ -103,7 +103,7 @@ Note: It is possible to optimize this algorithm by using `alpha-beta pruning`, w
 <span float="left"><img src="https://piotr.detyna.pl/patch.png" style="width: 40px; margin-bottom: -5px;"></span>`/games/{game_id}/`
 
 - Puts the current player's symbol in the correct place on the board.
-- Parameters: `x`, `y`
+- Parameters: `game_id` (_required_), `x`, `y`
     - `x`, `y` are required only when current player is a human, if the AI is taking his turn, those will be ignored.
 - Example request body (when it's a human's turn and you want to place your symbol in top-left corner):
     ```
@@ -137,7 +137,7 @@ Note: It is possible to optimize this algorithm by using `alpha-beta pruning`, w
 <span float="left"><img src="https://piotr.detyna.pl/put.png" style="width: 40px; margin-bottom: -5px;"></span>`/games/{game_id}/`
 
 - Resets game to inital state
-- Parameters: `ai_symbol` _optional_
+- Parameters: `game_id`(_required_), `ai_symbol` (_optional_)
     - `ai_symbol` can be 'O' or 'X', if it's not sent, ai will use `config.DEFAULT_AI_SYMBOL`
 - Example request body:
     ```
