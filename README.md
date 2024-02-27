@@ -12,7 +12,7 @@ The game logic is implemented in the `tictactoe.py` file, which I created when t
 Note: It is possible to optimize this algorithm by using `alpha-beta pruning`, which allows us to finish resolving moves faster when we know that we will not find a better solution.
 
 ## 🛠️ API documentation
-<span float="left"><img src="https://piotr.detyna.pl/get.png" style="width: 40px; margin-bottom: -5px;"></span>`/games/`
+<span float="left"><img src="https://piotr.detyna.pl/methods/get.png" style="width: 40px; margin-bottom: -5px;"></span>`/games/`
 
 - Returns all games
 - Parameters: No parameters
@@ -40,7 +40,7 @@ Note: It is possible to optimize this algorithm by using `alpha-beta pruning`, w
     ```
 
 #
-<span float="left"><img src="https://piotr.detyna.pl/get.png" style="width: 40px; margin-bottom: -5px;"></span>`/games/{game_id}`
+<span float="left"><img src="https://piotr.detyna.pl/methods/get.png" style="width: 40px; margin-bottom: -5px;"></span>`/games/{game_id}`
 
 - Returns a game with given id
 - Parameters: `game_id` (_required_)
@@ -65,7 +65,7 @@ Note: It is possible to optimize this algorithm by using `alpha-beta pruning`, w
     ```
 
 #
-<span float="left"><img src="https://piotr.detyna.pl/post.png" style="width: 40px; margin-bottom: -5px;"></span>`/games/`
+<span float="left"><img src="https://piotr.detyna.pl/methods/post.png" style="width: 40px; margin-bottom: -5px;"></span>`/games/`
 
 - Creates a game
 - Parameters: `ai_symbol` (_optional_)
@@ -100,7 +100,7 @@ Note: It is possible to optimize this algorithm by using `alpha-beta pruning`, w
 
   
 #
-<span float="left"><img src="https://piotr.detyna.pl/patch.png" style="width: 40px; margin-bottom: -5px;"></span>`/games/{game_id}/`
+<span float="left"><img src="https://piotr.detyna.pl/methods/patch.png" style="width: 40px; margin-bottom: -5px;"></span>`/games/{game_id}/`
 
 - Puts the current player's symbol in the correct place on the board.
 - Parameters: `game_id` (_required_), `x`, `y`
@@ -134,7 +134,7 @@ Note: It is possible to optimize this algorithm by using `alpha-beta pruning`, w
 
 
 #
-<span float="left"><img src="https://piotr.detyna.pl/put.png" style="width: 40px; margin-bottom: -5px;"></span>`/games/{game_id}/`
+<span float="left"><img src="https://piotr.detyna.pl/methods/put.png" style="width: 40px; margin-bottom: -5px;"></span>`/games/{game_id}/`
 
 - Resets game to inital state
 - Parameters: `game_id`(_required_), `ai_symbol` (_optional_)
